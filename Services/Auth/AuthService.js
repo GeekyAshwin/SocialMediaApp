@@ -1,5 +1,6 @@
 import connection from "../../DB/Connections.js";
-
+import UserUtility from "../../Utils/UserUtility.js";
+import jwt from "jsonwebtoken";
 const AuthService = {
 
      /**
@@ -9,7 +10,7 @@ const AuthService = {
 
         const userData = {
              email: req.body.email,
-             password: req.body.password,
+             password: await UserUtility.encryptString(req.body.password),
              username: req.body.username,
              name: req.body.name
         }
@@ -38,10 +39,44 @@ const AuthService = {
     /**
      * Method to login user
      */
-    login(req, res) {
-        const email = req.body.email;
-        const password = req.body.password;
-    }
+    async login(req, res) {
+
+        const userData = {
+             email: req.body.email,
+             password: req.body.password,
+        }
+
+        const db = await connection.connectDB();
+        const userCollection = db.collection('users');
+        const user = await userCollection.findOne({ email: userData.email });
+
+        if (!user) {
+            return {
+                status: false,
+                data: [],
+                message: 'User not found'
+            }; 
+        }
+        const loggedIn = await UserUtility.isPasswordCorrect(userData.password, user.password);
+        console.log(loggedIn)
+        if (loggedIn) {
+            var token = jwt.sign({ user: user }, user.email);
+            const data = {
+                user: user,
+                token: token,
+            }
+            return {
+                status: true,
+                data: data,
+                message: 'User loggedin Successfully'
+            };   
+        } else {
+            return {
+                status: false,
+                message: 'Invalid credentials'
+            };
+        }
+    },
 }
 
 export default AuthService;

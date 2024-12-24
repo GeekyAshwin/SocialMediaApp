@@ -1,0 +1,11 @@
+{
+  "name": "socialmediaapp",
+  "version": "1.0.0",
+  "description": "A social media app",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "author": "ashwini",
+  "license": "ISC"
+}

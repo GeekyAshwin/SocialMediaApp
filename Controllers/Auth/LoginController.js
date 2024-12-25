@@ -20,14 +20,14 @@ const LoginController = {
             console.error(error);
             res.status(500).json(data);
         }
-    }
+    },
 
     /**
      * Method to send forgot password mail
      */
     sendForgotPasswordMail () {
 
-    }
+    },
 
     /**
      * Method to reset the password

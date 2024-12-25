@@ -1,5 +1,5 @@
 import AuthService from "../../Services/Auth/AuthService.js";
-
+import registerValidation from "../../Validations/RegisterValidation.js";
 const RegisterController = {
 
     /**
@@ -8,6 +8,7 @@ const RegisterController = {
     async register(req, res) {
         try {
             // run validations
+            registerValidation.parse(req.body);
             const result = await AuthService.register(req, res);
 
             if (result?.status) {
@@ -19,7 +20,7 @@ const RegisterController = {
         } catch (error) {
             console.error(error);
             res.status(500).json({
-                message: 'Internal Server Error'                
+                message: error,            
             });
         }
 

@@ -1,7 +1,8 @@
 async function sendSuccessResponse( res ,message, data = []) {
     return res.status(200).json({
         status: true,
-        message: message
+        message: message,
+        data: data,
     });
 }
 

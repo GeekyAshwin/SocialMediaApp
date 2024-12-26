@@ -2,6 +2,7 @@ import express from "express";
 import PostService from "../../Services/Post/PostService.js";
 import Post from "../../Models/Post.js";
 import UserUtility from "../../Utils/UserUtility.js";
+import responses from "../../Utils/ResponseUtility.js";
 
 const PostController = {
     /**
@@ -13,9 +14,7 @@ const PostController = {
             return res.status(200).json(data);
         } catch (error) {
             console.error(error)
-            res.status(201).json({
-                message: 'Something went wrong'
-            });
+            responses.sendServerErrorResponse();
         }
     },
 
@@ -42,9 +41,8 @@ const PostController = {
 
         } catch (error) {
             console.error(error)
-            res.status(500).json({
-                message: 'Something went wrong'
-            });
+            responses.sendServerErrorResponse();
+
         }
 
     },
@@ -52,7 +50,21 @@ const PostController = {
     /**
      * Method to delete the post
      */
-    async deletePost() {
+    async deletePost(req, res) {
+        try {
+            const postId = req.params.id;
+            let post = await Post.deleteOne({
+                _id: postId
+            });
+            if (post.deletedCount === 0) {
+                return responses.sendUnprocessableDataResponse(res, 'Post already deleted');
+            }
+            return responses.sendSuccessResponse(res, 'Post deleted');
+
+        } catch (error) {
+            console.error(error)
+            responses.sendServerErrorResponse();
+        }
 
     }
 }

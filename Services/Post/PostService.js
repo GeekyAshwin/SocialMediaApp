@@ -27,6 +27,15 @@ const PostService = {
       });
     }
   },
+
+  /**
+   * Method to get post by id
+   */
+  async getPostById(postId) {
+    return await Post.findOne({
+      _id: postId
+    });
+  }
 };
 
 export default PostService;

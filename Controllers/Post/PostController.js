@@ -3,6 +3,7 @@ import PostService from "../../Services/Post/PostService.js";
 import Post from "../../Models/Post.js";
 import UserUtility from "../../Utils/UserUtility.js";
 import responses from "../../Utils/ResponseUtility.js";
+import PostLike from "../../Models/PostLike.js";
 
 const PostController = {
     /**
@@ -64,6 +65,51 @@ const PostController = {
         } catch (error) {
             console.error(error)
             responses.sendServerErrorResponse();
+        }
+
+    },
+
+
+    /**
+     * Method to like , unlike the post
+     */
+    async likePost (req, res) {
+        try {
+            const user = await UserUtility.getLoggedInUser(req);
+            const postId = req.params.id;
+
+            let postLiked = await PostLike.find({
+                postId: postId,
+                userId: user._id,
+            });
+            let post = await PostService.getPostById(postId);
+            let likeCount = post?.likeCount;
+            if (postLiked.length) {
+                await post.updateOne({
+                    likeCount : --likeCount
+                });
+                await PostLike.find({
+                    postId: postId,
+                    userId: user._id,
+                }).deleteOne();
+                return responses.sendSuccessResponse(res, 'Post Unliked')
+            }
+
+            postLiked = await PostLike.create({
+                postId: postId,
+                userId: user._id,
+            });
+            await post.updateOne({
+                likeCount : ++likeCount
+            });
+
+            if (postLiked) {
+                return responses.sendSuccessResponse(res, 'Post liked')
+            }
+
+        } catch (error) {
+            console.error(error)
+            return responses.sendServerErrorResponse(res);
         }
 
     }

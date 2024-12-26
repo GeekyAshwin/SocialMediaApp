@@ -13,7 +13,22 @@ const postSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
-    }
+    },
+    likeCount: {
+        type: Number,
+        default: 0,
+        nullable: true,
+    },
+    commentCount: {
+        type: Number,
+        default: 0,
+        nullable: true,
+    },
+    shareCount: {
+        type: Number,
+        default: 0,
+        nullable: true,
+    },
 });
 
 const Post = mongoose.model('Post', postSchema);

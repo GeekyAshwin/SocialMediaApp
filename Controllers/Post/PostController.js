@@ -7,10 +7,8 @@ const PostController = {
      */
     async createPost(req, res) {
         try {
-            const data = PostService.createPost(req, res);
-            if (data.status) {
-                res.status(201).json(data);
-            }
+            const data = await PostService.createPost(req, res);
+            return res.status(200).json(data);
         } catch (error) {
             console.error(error)
             res.status(201).json({

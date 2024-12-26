@@ -8,6 +8,11 @@ const postSchema = new mongoose.Schema({
     imageUrl: {
         type: String,
         nullable: true
+    },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
     }
 });
 

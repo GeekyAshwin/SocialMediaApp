@@ -60,7 +60,7 @@ const AuthService = {
         const loggedIn = await UserUtility.isPasswordCorrect(userData.password, user.password);
         console.log(loggedIn)
         if (loggedIn) {
-            var token = jwt.sign({ user: user }, user.email);
+            var token = jwt.sign({ user: user }, process.env.JWT_SECRET_KEY);
             const data = {
                 user: user,
                 token: token,

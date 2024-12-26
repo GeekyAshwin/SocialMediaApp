@@ -1,5 +1,6 @@
 import express from "express";
 import AuthService from "../../Services/Auth/AuthService.js";
+import EmailService from "../../Services/Emails/EmailService.js";
 
 const LoginController = {
 
@@ -25,7 +26,18 @@ const LoginController = {
     /**
      * Method to send forgot password mail
      */
-    sendForgotPasswordMail () {
+    async sendForgotPasswordMail (req, res) {
+        try {
+            const data = await EmailService.sendForgotPasswordEmail(req, res);
+            if (data.status) {
+                res.status(200).json(data);
+            } else {
+                res.status(500).json(data);
+            }
+        } catch (error) {
+            console.error(error)
+            res.status(500).json(data);
+        }
 
     },
 

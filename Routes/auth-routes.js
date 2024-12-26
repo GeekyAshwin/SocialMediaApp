@@ -5,7 +5,6 @@ const authRoutes = express.Router();
 
 authRoutes.post('/api/register', RegisterController.register);
 authRoutes.post('/api/login', LoginController.login);
-
-
+authRoutes.post('/api/forgot-password', LoginController.sendForgotPasswordMail);
 
 export default authRoutes;

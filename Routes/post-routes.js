@@ -5,5 +5,7 @@ import AuthMiddleware from "../Middlewares/AuthMiddleware.js";
 const postRoutes = express.Router();
 
 postRoutes.post('/api/post/create', AuthMiddleware, PostController.createPost);
+postRoutes.get('/api/post', AuthMiddleware, PostController.getAllPostOfUser);
+
 
 export default postRoutes;

@@ -4,14 +4,14 @@ import { randomBytes } from "crypto";
 const AuthMiddleware = (req, res, next) => {
 
     try {
-        const token = req.headers.authorization.trim().replace("Bearer ", "") ;
+        const token = req.headers.authorization ;
         if (!token) {
             return res.status(401).json({
                 status: 401,
-                message: 'Invalid Authorization Token'
+                message: 'Missing Authorization Token'
             });
         }
-        const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const user = jwt.verify(token.trim().replace("Bearer ", ""), process.env.JWT_SECRET_KEY);
         req.session.user = user;
         next();
 
@@ -19,7 +19,7 @@ const AuthMiddleware = (req, res, next) => {
         console.error(error);
         res.status(401).json({
             status: 401,
-            message: 'Invalid Authorization Token1'
+            message: 'Invalid Authorization Token'
         });
     }
 

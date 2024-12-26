@@ -25,6 +25,13 @@ const UserUtility = {
         return await User.findOne({
             email: email
         });
+    },
+
+    /**
+     * Method to get user by email
+     */
+    async getLoggedInUser(req) {
+        return req.session.user.user;
     }
 }
 

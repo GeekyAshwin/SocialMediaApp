@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import User from "../Models/User.js";
 
 const UserUtility = {
 
@@ -15,6 +16,15 @@ const UserUtility = {
     isPasswordCorrect(givenPassword, actualPassword) {
         console.log(givenPassword, actualPassword)
         return bcrypt.compare(givenPassword, actualPassword)
+    },
+
+    /**
+     * Method to get user by email
+     */
+    async getUserByEmail(email) {
+        return await User.findOne({
+            email: email
+        });
     }
 }
 

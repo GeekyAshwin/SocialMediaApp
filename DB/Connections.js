@@ -1,5 +1,6 @@
 import { MongoClient } from "mongodb";
 import 'dotenv/config'
+import mongoose from "mongoose";
 
 const dbUrl = process.env.DATABASE_URL;
 const dbName = process.env.DATABASE_NAME;
@@ -11,6 +12,7 @@ const connection = {
         try {
             // connect mongodb
             await mongoClient.connect();
+            mongoose.connect(dbUrl);
             // return the instance
             return mongoClient.db(dbName);
         } catch (error) {
